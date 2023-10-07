@@ -33,7 +33,6 @@ export const deleteContact = createAsyncThunk(
 export const addContact = createAsyncThunk(
     "contacts/addContact",
     async (value, thunkAPI) => {
-        console.log(value);
         try {
             const response = await axios.post("/contacts",  value );
             return response.data;
