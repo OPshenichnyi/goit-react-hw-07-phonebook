@@ -2,8 +2,8 @@ import { Formik,ErrorMessage} from 'formik';
 import { nanoid } from 'nanoid';
 import * as Yup from "yup";
 import { CssInput, WrapperForm } from './ContactForm.styled';
-import { addContacts } from 'components/redux/contactSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'components/redux/operations';
 
 
 
@@ -12,13 +12,12 @@ const SignupSchema = Yup.object().shape({
         .matches(/^[a-zA-Zа-яА-Я ]*$/, 'Must be string')
         .min(3, 'Must be at least 3 characters long')
         .required('Required'),
-    number: Yup.number().required('Required'),
+    phone: Yup.number().required('Required'),
 });
 
 export const ContactForm = () => {  
     const dispatch = useDispatch()
     const phoneList = useSelector(state => state.contacts.contacts)
-    
 
     function chekContact(value) {
         const checkNameUser = phoneList.some(user =>
@@ -27,7 +26,7 @@ export const ContactForm = () => {
             alert(`${value.name} is already in contacts`)
             return
         }
-        dispatch(addContacts(value))
+        dispatch(addContact(value))
     } 
     
     return (
@@ -36,7 +35,7 @@ export const ContactForm = () => {
 
             initialValues={{
                 name: '',
-                number: ''
+                phone: ''
             }}          
 
             onSubmit={(values, actions) => { 
@@ -53,10 +52,10 @@ export const ContactForm = () => {
                 <br />
                 <ErrorMessage name="name" />
                 <br />
-                <label htmlFor="number">Number</label>
-                <CssInput id="number" name="number" placeholder="Number" />
+                <label htmlFor="phone">Number</label>
+                <CssInput id="phone" name="phone" placeholder="Phone" />
                 <br />
-                <ErrorMessage name="number" />
+                <ErrorMessage name="phone" />
                 <br />    
                 <button type="submit">Submit</button>
             </WrapperForm>

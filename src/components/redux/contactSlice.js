@@ -1,29 +1,55 @@
-import persistReducer from 'redux-persist/es/persistReducer';
-import storage from 'redux-persist/lib/storage'
+import { addContact, deleteContact, fetchContacts } from "./operations";
 const { createSlice } = require("@reduxjs/toolkit");
+
+const handleIsLoading = state => {
+    state.isLoading = true;
+};
+const handleRejected = (state, action) => {
+    state.isLoading = false;
+    state.error = action.payload;
+};
 
 const slice = createSlice({
     name: 'contacts',
     initialState: {
-        contacts:[],
+        contacts: [],
+        isLoading: false,
+        error: null,
     },
-    reducers: {
-        addContacts(state, action) {
-            state.contacts.push(action.payload)
+    extraReducers: {
+
+        [fetchContacts.pending]: handleIsLoading,
+        [fetchContacts.fulfilled](state, action) {
+            state.isLoading = false;
+            state.error = null;
+            state.contacts = action.payload;
         },
-        removeContact(state, action) {
-            state.contacts.splice(action.payload, 1);
-        }
+
+        [fetchContacts.rejected]: handleRejected,
+        [addContact.pending]: handleIsLoading,
+        [addContact.fulfilled](state, action) {
+            state.isLoading = false;
+            state.error = null;
+            state.contacts.push(action.payload);
+        },
+
+        [deleteContact.rejected]: handleRejected,
+        [deleteContact.pending]: handleIsLoading,
+        [deleteContact.fulfilled](state, action) {
+            state.isLoading = false;
+            state.error = null;
+            const index = state.contacts.findIndex(
+                contact => contact.id === action.payload.id
+            );
+            state.contacts.splice(index, 1);
+        },
+        [deleteContact.rejected]: handleRejected,
+
     }
-})
+
+    }
+)
+
 export const contactsReducer = slice.reducer
 export const { addContacts, removeContact } = slice.actions
-
-const persistConfig = {
-    key: 'root',
-    storage,
-}
-
-export const persistReducerContacts = persistReducer(persistConfig, contactsReducer)
-
 

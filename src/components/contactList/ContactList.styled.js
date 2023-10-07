@@ -9,7 +9,7 @@ color:#5a5a5a;
   flex-wrap: wrap;
   gap: 5px 10px;
 span{
-    width: 125px;
+    width: 140px;
     display: inline-block;
     margin-bottom: 15px;
 }

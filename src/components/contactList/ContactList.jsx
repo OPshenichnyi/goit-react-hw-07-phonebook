@@ -1,4 +1,5 @@
-import { removeContact } from "components/redux/contactSlice";
+
+import { deleteContact } from "components/redux/operations";
 import { ListItemPhone } from "./ContactList.styled"
 import { useDispatch, useSelector } from "react-redux";
 
@@ -16,22 +17,18 @@ export const ContactList = () => {
     const filter = useSelector(state => state.fillter.find) 
     const listPhoneBook = useSelector(state => state.contacts.contacts)
     const FiltredList = listContacts(listPhoneBook, filter)
-
-    function getIdxPhone(value) {        
-        const index = listPhoneBook.findIndex(user => user.id === value)
-        dispatch(removeContact(index))
-    }
+ 
 
     return (
         <ul>
-            {FiltredList.map(({ id, name, number }) => (
+            {FiltredList.map(({ id, name, phone }) => (
                 <ListItemPhone key={id}>
                     <span>{name}:</span>
-                    <span> {number}</span>
+                    <span> {phone}</span>
                     <button
                         type="button"
                         value={id}
-                        onClick={(e) => getIdxPhone(e.target.value) }
+                        onClick={(e) => dispatch(deleteContact(e.target.value))}
                     >Delete</button>
                 </ListItemPhone>
             ))}
