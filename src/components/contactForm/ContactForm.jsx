@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { CssInput, WrapperForm } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'components/redux/operations';
+import { getContacts } from 'components/redux/selectors';
 
 
 
@@ -17,7 +18,7 @@ const SignupSchema = Yup.object().shape({
 
 export const ContactForm = () => {  
     const dispatch = useDispatch()
-    const phoneList = useSelector(state => state.contacts.contacts)
+    const phoneList = useSelector(getContacts)
 
     function chekContact(value) {
         const checkNameUser = phoneList.some(user =>

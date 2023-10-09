@@ -2,6 +2,7 @@
 import { deleteContact } from "components/redux/operations";
 import { ListItemPhone } from "./ContactList.styled"
 import { useDispatch, useSelector } from "react-redux";
+import { getContacts, getFilter } from "components/redux/selectors";
 
 const listContacts = (listPhone, filter) => {
     
@@ -14,8 +15,8 @@ const listContacts = (listPhone, filter) => {
 
 export const ContactList = () => {
     const dispatch = useDispatch() 
-    const filter = useSelector(state => state.fillter.find) 
-    const listPhoneBook = useSelector(state => state.contacts.contacts)
+    const filter = useSelector(getFilter) 
+    const listPhoneBook = useSelector(getContacts)
     const FiltredList = listContacts(listPhoneBook, filter)
  
 
